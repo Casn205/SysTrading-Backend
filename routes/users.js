@@ -12,6 +12,15 @@ router.get('/Obtener', async function (req, res, next) {
   }
 });
 
+router.get('/ObtenerRol', async function (req, res, next) {
+  try {
+    res.json(await usuario.ObtenerRol(req.body));
+  } catch (err) {
+    console.error(`Error al obtener la lista de usuarios`, err.message);
+    next(err);
+  }
+});
+
 router.post("/registrar/:Rol", async function (req, res, next) {
   try {
     res.json(await usuario.registrar(req.body,req.params.Rol));

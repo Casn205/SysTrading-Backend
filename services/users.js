@@ -65,14 +65,17 @@ async function login(user) {
       },
     });
     if (!dbUser) {
-      return { mensaje: "Usuario/Contraseña incorrectos" };
+      return { mensaje: "correo incorrectos" };
     }
     let esPasswordValido = await bcrypt.compare(user.Contraseña, dbUser.Contraseña);
     if (!esPasswordValido) {
-      return { mensaje: "Usuario/Contraseña incorrectos" };
+      return { mensaje: "Contraseña incorrectos" };
     }
+
+    const rol = await ObtenerRol(dbUser.idUsuario);
+    
     const token = jwt.sign(
-      { idUsuario: dbUser.idUsuario, Correo: dbUser.Correo },
+      { idUsuario: dbUser.idUsuario, Correo: dbUser.Correo , Rol: rol.dataValues.Nombre },
       "secret",
       {
         expiresIn: "30m",
@@ -81,7 +84,7 @@ async function login(user) {
     return { token };
   } catch (error) {
     console.log(error);
-    return { mensaje: "Usuario/Contraseña incorrectos" };
+    return { mensaje: "Ha ocurrido un error "+error  };
   }
 }
 
@@ -124,10 +127,29 @@ async function BuscarPorCedula(cedula) {
   }
 }
 
+async function ObtenerRol(id) {
+  try {
+
+    const Rol_user = await models.rol_usuario.findOne({
+      where : {idUsuario : id}
+    });
+
+    const Rol = await models.rol.findOne({
+      where : {idRol : Rol_user.dataValues.idRol}
+    });
+    
+    return Rol;
+  } catch (error) {
+    console.log(error);
+    return { mensaje: "No se pudo obtener la lista de usuarios" };
+  }
+}
+
 module.exports = {
   registrar,
   login,
   ListaUsuarios,
   actualizarUsuario,
   eliminarUsuario,
+  ObtenerRol,
 };
