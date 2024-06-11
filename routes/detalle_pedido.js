@@ -12,7 +12,7 @@ router.post('/registrar', async function (req, res, next) {
     const pedido = await models.pedido.findByPk(idPedido);
 
     if (pedido && pedido.estado === 'Completado') {
-      await actualizarCantidadProducto(idProducto, Cantidad);
+      await actualizarCantidadProducto(idProducto, parseInt(Cantidad, 10));
     }
     
     res.json(await detalle_pedido.RegistrarDetalle_pedido({ idPedido, idProducto, Cantidad }));

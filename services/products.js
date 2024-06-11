@@ -61,10 +61,22 @@ async function actualizarCantidadProducto(idProducto, cantidad) {
   }
 }
 
+async function QuitarCantidadProducto(idProducto, cantidad) {
+  try {
+    const producto = await models.products.findByPk(idProducto);
+    if (producto) {
+      producto.cantidad -= cantidad;
+      await producto.save();
+    }
+  } catch (err) {
+    console.error('Error al actualizar la cantidad del producto:', err);
+  }
+}
 module.exports = {
   registrar,
   ListaProductos,
   actualizarProducto,
   eliminarProducto,
-  actualizarCantidadProducto
+  actualizarCantidadProducto,
+  QuitarCantidadProducto
 };

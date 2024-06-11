@@ -96,6 +96,7 @@ async function actualizarUsuario(id, user) {
     await models.usuario.update(user, {
       where: { idUsuario:  id }
     });
+    console.log(id+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa)
     return { mensaje: "Usuario actualizado exitosamente" };
   } catch (error) {
     console.log(error);
@@ -105,6 +106,9 @@ async function actualizarUsuario(id, user) {
 
 async function eliminarUsuario(id) {
   try {
+    await models.rol_usuario.destroy({
+      where: {idUsuario: id}
+    });
     await models.usuario.destroy({
       where: { idUsuario: id }
     });
@@ -119,6 +123,18 @@ async function BuscarPorCedula(cedula) {
   try {
     const usuarios = await models.usuario.findOne({
       where : {Cedula : cedula}
+    });
+    return usuarios;
+  } catch (error) {
+    console.log(error);
+    return { mensaje: "No se pudo obtener la lista de usuarios" };
+  }
+}
+
+async function BuscarPorId(ID) {
+  try {
+    const usuarios = await models.usuario.findOne({
+      where : {idUsuario : ID}
     });
     return usuarios;
   } catch (error) {
@@ -152,4 +168,5 @@ module.exports = {
   actualizarUsuario,
   eliminarUsuario,
   ObtenerRol,
+  BuscarPorId,
 };

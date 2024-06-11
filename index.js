@@ -8,7 +8,7 @@ const ProductsRouter = require("./routes/products");
 const pedidoRouter = require("./routes/pedidoRoutes");
 const RolUserRouter = require("./routes/Rol_Usuario");
 const DetalleRouter= require("./routes/detalle_pedido")
-
+const EgresoRouter= require("./routes/egreso");
 const cors = require('cors');
 
 app.use(express.json());
@@ -30,6 +30,7 @@ app.use("/products",ProductsRouter);
 app.use("/pedido",pedidoRouter);
 app.use("/RolUser",RolUserRouter);
 app.use("/Detalle",DetalleRouter);
+app.use("/egreso",EgresoRouter);
 
 /* Error handler middleware */
 app.use((err, req, res, next) => {
