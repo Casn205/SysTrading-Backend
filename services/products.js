@@ -39,7 +39,12 @@ async function actualizarProducto(id, product) {
 
 async function eliminarProducto(id) {
   try {
+
+    await models.detalle_pedido.destroy({
+      where: {idProducto: id}
+    });
     await models.products.destroy({
+
       where: { idproduct: id }
     });
     return { mensaje: "Producto eliminado exitosamente" };
